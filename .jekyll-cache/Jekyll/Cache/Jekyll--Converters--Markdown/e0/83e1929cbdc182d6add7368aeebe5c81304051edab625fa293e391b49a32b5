@@ -1,0 +1,29 @@
+I"�<h2 id="llmnrnbt-ns-poisoning">LLMNR/NBT-NS Poisoning</h2>
+<p>What is LLMNR? LLMNR stands for <em>link-local multicast name resolution</em>.  It is used to resolve host names on local networks.
+  The main fuction is to allow communication between hosts. LLMNR’s predecessor, NetBIOS or NBT-NS, is now outdated.</p>
+
+<p>This attack takes advantage of this protocol.  When a user enters the name of a request, DNS resolves it.  However, if DNS cannot find the request or if the request is spelt wrong for example, the host sends out a broadcast to the network asking for someone to retrieve their request.<br />
+	If an attacker is sitting on the network and receives this request, they can respond and ask the host to send it’s authentification hash over, providing full user access for the attacker once the hash is cracked.</p>
+
+<h2 id="the-attack">The Attack:</h2>
+<p>On our Kali Linux attacking machine, we will be running Responder, a tool that allows us to execute this attack.  We will use the following command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>python Repsonder.py <span class="nt">-I</span> eth0 - rdwv
+</code></pre></div></div>
+<p>Once this is ran, Responder begins listening for events.  In a real world scenario, an attacker would set this up in the morning, before everyone logs on to their environments so that the attacker can receive the most traffic.</p>
+
+<p><a href="https://postimg.cc/McSfNgf8"><img src="https://i.postimg.cc/R0316BMq/respondinglistening.png" alt="respondinglistening.png" /></a></p>
+
+<p>Now we can see that Responder is successfully listening for events.  At this point, we are setup to begin receiving broadcast messages.  After sending a request that does not exist on the user “fcastle”, our attacking machine has received a connection:</p>
+
+<p><a href="https://postimg.cc/MnCZFB4M"><img src="https://i.postimg.cc/TPwyhqJ9/Auto-Hotkey-x-Mq-U1-K6-Iw-I.png" alt="Auto-Hotkey-x-Mq-U1-K6-Iw-I.png" /></a></p>
+<h2 id="hash-cracking">Hash Cracking:</h2>
+<p>After receving the hash, we will crack it using hashcat on our attacking machine. We will use the rockyou.txt.gz wordlist to run against the NetNTLMv2 hash.  After running haschat, the results are:</p>
+
+<p><a href="https://postimg.cc/64nNkbGD"><img src="https://i.postimg.cc/WzfbJQpb/Capture.png" alt="Capture.png" /></a></p>
+
+<p>And just like that, the password has been cracked. At the end of the hash, the password is displayed.  For purposes of this lab, the password was simple and easy to crack. However, after receiving a hash, an attacker will be patient and work on cracking the hash, no matter how diffucult. The usage of weak passwords is surprisingly common within networks that do not have proper security measures set in place. After cracking a hash, an attacker now has access and it is just a matter of enumerating and moving around the network.  Password reuse can also be an issue for networks, so an attacker’s next steps would be to spray this password around and see what they can expose.</p>
+
+<h2 id="defense">Defense:</h2>
+<p>So, what can be done to mitigate this issue?
+	 The best defense is to disable LLMNR and NBT-NS to completely eradicate the possibility of this event occuring. Another step is to require much stronger passwords.  14+ character passwords are very difficult to crack and would pose a great challenge for any attacker.  However, if an attacker is persistent, the hashes can still be cracked no matter the difficulty.</p>
+:ET

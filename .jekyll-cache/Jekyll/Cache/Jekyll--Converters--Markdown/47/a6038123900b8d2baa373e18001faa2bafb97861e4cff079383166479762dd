@@ -1,0 +1,4 @@
+I"=<h2 id="llmnrnbt-ns-poisoning">LLMNR/NBT-NS Poisoning</h2>
+<p>What is LLMNR? LLMNR stands for <em>link-local multicast name resolution</em>.  It is used to resolve host names on local networks.
+  The main fuction is to allow communication between hosts. LLMNR’s predecessor, NetBIOS or NBT-NS, is now outdated.</p>
+:ET
