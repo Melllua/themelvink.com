@@ -9,7 +9,7 @@ banner:
   loop: true
   volume: 0.8
   start_at: 8.5
-  image: "/assets/images/pexels-donald-tong-133953.jpg"
+  image: "assets/images/banners/pexels-donald-tong-133953.jpg"
   opacity: 0.618
   background: "#000"
   height: "100vh"
@@ -42,12 +42,12 @@ em5 - Splunk server
 
 Big thanks to Cyberwoxacademy for the homelab design - it provided a great foundation to then build out the cloud integration myself.
 
-![Alt text](image-1.png)
+![Alt text](/assets/images/image-1.png)
 
 ## The cloud?
 Now, with all of the system set up out of the way, I can start explaining how I plan on moving all of this stuff to azure. Microsoft has a great program called the Microsoft 365 Developer Program. This enables users to get access to 25 E5 licenses, which include Office 365, Defender for Identity/Endpoint, Azure Active Directory, and Intune to name a few.
 
-![Alt text](image-3.png)
+![Alt text](/assets/images/image-3.png)
 
 Utilizing these resources, I created a global admin account allowing for the management of user privileges and services. Additionally, I integrated a public domain, ensuring users aren't confined to connecting via a local domain (this will lead to VPN setup down the road and MFA to enable remote working capabilities). This setup primes the environment for an Azure integration, allowing for seamless authentication using Microsoft accounts, binding individual user identities with their respective devices for a streamlined experience.
 
