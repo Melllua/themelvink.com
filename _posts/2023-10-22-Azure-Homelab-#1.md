@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Building an azure homelab
+title: Building an Azure homelab
 subtitle: Homelab in the cloud.
 author: Melvin Karuga
 categories: homelab
