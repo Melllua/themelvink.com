@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MDM via Azure
+title: MDM via Azure - Part 1
 subtitle: Securing BYOD/corporate devices in an organization.
 author: Melvin Karuga
 categories: homelab
@@ -9,7 +9,7 @@ banner:
   loop: true
   volume: 0.8
   start_at: 8.5
-  image: "/assets/images/banners/wireshark-1.png"
+  image: "/assets/images/banners/intune.png"
   opacity: 0.618
   background: "#000"
   height: "100vh"
