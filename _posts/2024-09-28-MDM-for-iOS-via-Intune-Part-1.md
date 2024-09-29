@@ -45,10 +45,13 @@ After the certificate is generated, a status of **Valid** will appear:
 Now that we have our certificate, we can push this to devices that request to be enrolled. How? By setting up an **enrollment type profile**.
 
 1.  Navigate to **Devices → Enrollment → Enrollment types → Create profile.**
+
 2.  Create and name the profile:![Alt text](/assets/images/MDM-for-iOS-via-Intune-Part-1/2.png)
-3.  Choose the enrollment type:![Alt text](/assets/images/MDM-for-iOS-via-Intune-Part-1/3.png)This will change the user experience for enrolling a device. To test this, I tried both **Determine based on user choice** and **Device enrollment with Company Portal.** The former gave the option to choose whether the device is corporate or personally owned. If personal is chosen, the user can choose to secure the entire device or just the managed applications. Below are two screenshots showing the user experience for both, respectively:
+
+3.  Choose the enrollment type:![Alt text](/assets/images/MDM-for-iOS-via-Intune-Part-1/3.png)
+This will change the user experience for enrolling a device. To test this, I tried both **Determine based on user choice** and **Device enrollment with Company Portal.** The former gave the option to choose whether the device is corporate or personally owned. If personal is chosen, the user can choose to secure the entire device or just the managed applications. Below are two screenshots showing the user experience for both, respectively:
     
-    ###   
+     
     **User choice:**
     
     ![Alt text](/assets/images/MDM-for-iOS-via-Intune-Part-1/4.png)
@@ -61,7 +64,7 @@ Now that we have our certificate, we can push this to devices that request to be
 
 As shown, device enrollment only allows that form of enrollment, whereas user choice gives much more flexibility.
 
-4.  Select the users/groups to be added to the enrollment profile and create the profile.
+Finally, select the users/groups to be added to the enrollment profile and create the profile.
 
 ## Closing notes
 
