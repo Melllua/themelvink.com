@@ -56,7 +56,8 @@ Enrolling the device alone is not enough. However, now that we have the devices 
     - Require a password: Require
         - Simple passwords: Block
         - Password expiration (days): 90
-            - There are several other rules to set that I will not be covering, these are just a handful of important rules.
+
+There are several other rules to set that I will not be covering, these are just a handful of important rules.
 
 ## App protection policy
 
