@@ -19,8 +19,11 @@ banner:
 tags: HTB-Sherlocks
 sidebar: []
 ---
+## Introduction
+This is a write-up of a very fun HackTheBox Sherlock room. If you haven't heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred. 
 
-## Backrgound
+
+## Backrground
 Khalid has just logged onto a host that he and his team use as a testing host for many different purposes, it’s off their corporate network but has access to lots of resources in network. The host is used as a dumping ground for a lot of people at the company but it’s very useful, so no one has raised any issues. Little does Khalid know; the machine has been compromised and company information that should not have been on there has now been stolen – it’s up to you to figure out what has happened and what data has been taken.
 
 ## Given
@@ -134,6 +137,6 @@ desktop-umncbe7\test
 - As we can see, there is a number displayed right before each entry. At the end of the file, the last number we see is 721, which is our answer! This room has been completed!
 
 ## Conclusion
-This was a great room. I learned a new technique used by hackers and was able to see if executed on the other side. Wireshark is such a great tool and provides so much visibility, you just have to know what you're looking for. 
+This was a great room. I learned a new technique used by threat actors and was able to see it executed on the other side. Wireshark is such a great tool and provides so much visibility, you just have to know what you're looking for. 
 
 The Sherlocks rooms are a great way to get some fun experience with responding to alerts and attacker activity!
