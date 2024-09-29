@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="themelvink.com/jekyll-theme-yat/feed.xml" rel="self" type="application/atom+xml" /><link href="themelvink.com/jekyll-theme-yat/" rel="alternate" type="text/html" /><updated>2024-09-29T04:45:54+00:00</updated><id>themelvink.com/jekyll-theme-yat/feed.xml</id><title type="html">theMelvinK</title><subtitle>Welcome to my blog!</subtitle><author><name>Melvin Karuga</name></author><entry><title type="html">MDM via Azure - Part 1</title><link href="themelvink.com/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-1.html" rel="alternate" type="text/html" title="MDM via Azure - Part 1" /><published>2024-09-28T00:00:00+00:00</published><updated>2024-09-28T00:00:00+00:00</updated><id>themelvink.com/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-1</id><content type="html" xml:base="themelvink.com/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-1.html"><![CDATA[<h1 id="mdm-for-ios-via-intune---part-1">MDM for iOS via Intune - Part 1</h1>
+<p>This is the first part of a 2-part write-up that will overview how I was able to set up MDM (mobile device management) through Intune. This project opened my eyes to the power of conditional access and MDM.</p>
+
+<h2 id="goal">Goal</h2>
+
+<p>In order to secure BYOD devices, we will create several policies and profiles to create a secure environment for users to access corporate data without extracting sensitive items.</p>
+
+<p><strong>We will need to:</strong></p>
+
+<ul>
+  <li>Set up an <strong>Apple MDM push certificate</strong> - this will allow management of Apple devices with Intune.</li>
+  <li>Create an <strong>enrollment type profile</strong> - this will set the way users will enroll their devices (installing the MDM push certificate to enrolled devices for management).</li>
+</ul>
+
+<h2 id="apple-mdm-push-certificate-setup">Apple MDM Push Certificate Setup</h2>
+
+<p>In the Intune admin center, navigate to <strong>Devices → iOS devices → Enrollment</strong>. This is where the Apple MDM Push Certificate can create. You will be required to download a CSR, login to your apple account, paste the CSR and generate the certificate. Again, the purpose of this is to allow <em>management of iOS devices via Intune</em>. Otherwise, there would be no management profile for the iOS device to download, disallowing any control over the device.</p>
+
+<p>After the certificate is generated, a status of <strong>Valid</strong> will appear:</p>
+
+<p><img src="/assets/images/MDM-for-iOS-via-Intune-Part-1/1.png" alt="Alt text" /></p>
+
+<h2 id="enrollment-type-profile">Enrollment Type Profile</h2>
+
+<p>Now that we have our certificate, we can push this to devices that request to be enrolled. How? By setting up an <strong>enrollment type profile</strong>.</p>
+
+<ol>
+  <li>
+    <p>Navigate to <strong>Devices → Enrollment → Enrollment types → Create profile.</strong></p>
+  </li>
+  <li>
+    <p>Create and name the profile:<img src="/assets/images/MDM-for-iOS-via-Intune-Part-1/2.png" alt="Alt text" /></p>
+  </li>
+  <li>
+    <p>Choose the enrollment type:<img src="/assets/images/MDM-for-iOS-via-Intune-Part-1/3.png" alt="Alt text" />
+This will change the user experience for enrolling a device. To test this, I tried both <strong>Determine based on user choice</strong> and <strong>Device enrollment with Company Portal.</strong> The former gave the option to choose whether the device is corporate or personally owned. If personal is chosen, the user can choose to secure the entire device or just the managed applications. Below are two screenshots showing the user experience for both, respectively:</p>
+
+    <p><strong>User choice:</strong></p>
+
+    <p><img src="/assets/images/MDM-for-iOS-via-Intune-Part-1/4.png" alt="Alt text" /></p>
+  </li>
+</ol>
+
+<p><img src="/assets/images/MDM-for-iOS-via-Intune-Part-1/5.png" alt="Alt text" /></p>
+
+<h3 id="device-enrollment"><strong>Device enrollment:</strong></h3>
+
+<p><img src="/assets/images/MDM-for-iOS-via-Intune-Part-1/6.png" alt="Alt text" /></p>
+
+<p>As shown, device enrollment only allows that form of enrollment, whereas user choice gives much more flexibility.</p>
+
+<p>Finally, select the users/groups to be added to the enrollment profile and create the profile.</p>
+
+<h2 id="closing-notes">Closing notes</h2>
+
+<p>Now that we have created both the certificate and enrollment profile, we can proceed to part two which will <strong>force</strong> users to enroll using the enrollment profile when attempting to access any O365 application.</p>
+
+<hr />
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/mem/intune/enrollment/apple-user-enrollment-with-company-portal?WT.mc_id=Portal-Microsoft_Intune_Enrollment">Set up user enrollment with Company Portal</a></li>
+</ul>]]></content><author><name>Melvin Karuga</name></author><category term="homelab" /><category term="Azure-homelab" /><summary type="html"><![CDATA[MDM for iOS via Intune - Part 1 This is the first part of a 2-part write-up that will overview how I was able to set up MDM (mobile device management) through Intune. This project opened my eyes to the power of conditional access and MDM.]]></summary></entry><entry><title type="html">MDM via Azure - Part 2</title><link href="themelvink.com/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-2.html" rel="alternate" type="text/html" title="MDM via Azure - Part 2" /><published>2024-09-28T00:00:00+00:00</published><updated>2024-09-28T00:00:00+00:00</updated><id>themelvink.com/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-2</id><content type="html" xml:base="themelvink.com/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-2.html"><![CDATA[<h1 id="mdm-for-ios-via-intune---part-2">MDM for iOS via Intune - Part 2</h1>
+
+<h2 id="goal-ios-devices-enrollment-to-access-o365-applications">Goal: iOS devices enrollment to access O365 applications.</h2>
+
+<p>The first part of MDM for iOS involved setting up the prerequisites, such as creating the certificate and the enrollment profile. To actually utilize these properties, we must create policies forcing these requirements upon users accessing O365 applications.<br />
+<br />We will need to:</p>
+
+<ul>
+  <li>Create a <strong>Conditional Access</strong> policy requiring that devices accessing O365 apps need to be compliant in Intune.
+    <ul>
+      <li>This step alone forces the user logging into any O365 apps to enroll their device via the <strong>Company Portal</strong> app on iOS.</li>
+    </ul>
+  </li>
+  <li>Add an additional <strong>Device Compliance</strong> policy setting some additional security measures to ensure that compliant devices meet certain requirements.</li>
+  <li>Set an <strong>App protection</strong> policy to set requirements for using any O365 application.</li>
+</ul>
+
+<p>The goal here is to have a more secure BYOD setup. By configuring and creating these policies, we will require users to enroll their device <strong>only</strong> if it is compliant. We can then set the compliance requirements; only after this will the users be able to access the applications. However, even <strong>after</strong> all of the prior steps, we have the App protection policy to ensure that any actions taken within the app are backed by the security policy.</p>
+
+<h2 id="conditional-access-policy">Conditional access policy</h2>
+
+<p>Now, we will need to create a CAP to force a user to enroll their device into Intune in order to access any O365 apps under their company identity. This is especially useful because in tangent, we can create a device compliance policy setting the requirements to be compliant.</p>
+
+<p>Firstly, the CAP. Navigate to Devices → Conditional Access → Create new policy.</p>
+
+<ul>
+  <li>Let’s select the applications we want to grant access to. I will choose <strong>Office 365</strong> here.<img src="/assets/images/MDM-for-iOS-via-Intune-Part-2/1.png" alt="Alt text" /></li>
+  <li>Scroll down to conditions and set the device platform to be <strong>iOS</strong>.</li>
+  <li>Finally, select grant and choose <strong>Require device to be marked as compliant</strong>.<img src="/assets/images/MDM-for-iOS-via-Intune-Part-2/2.png" alt="Alt text" /></li>
+</ul>
+
+<p>Now, we’re set. As soon as this CAP is deployed, users logging into any O365 application will get a pop up guiding them to enrolling their device.</p>
+
+<h2 id="device-compliance-policy">Device Compliance Policy</h2>
+
+<p>Enrolling the device alone is not enough. However, now that we have the devices being enrolled, we can fine tune our compliance policy to further secure what devices are accessing corporate data.</p>
+
+<ul>
+  <li>First, navigate to <strong>Devices → iOS → Compliance → Create Policy.</strong>
+    <ul>
+      <li>Jailbroken devices: Block</li>
+      <li>Require the device to be at or under the machine risk score: Low (ideal for corporate or devices that are fully managed. If a device is deemed a risk by Microsoft Defender for Endpoint, this device will no longer be compliant and users won’t be allowed to access O365 applications).</li>
+      <li>Require a password: Require
+        <ul>
+          <li>Simple passwords: Block</li>
+          <li>Password expiration (days): 90</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>There are several other rules to set that I will not be covering, these are just a handful of important rules.</p>
+
+<h2 id="app-protection-policy">App protection policy</h2>
+
+<p>Finally, we’ll set up the app protection policy allowing us to set parameters within the actual applications.</p>
+
+<ul>
+  <li>Navigate to <strong>Apps → App protection policies → Create Policy.</strong>
+    <ul>
+      <li>Target policy to: All Microsoft Apps</li>
+      <li>Configure data transfer, encryption, and functionality rules. Most notable rules that I configured were only allow copy/pasting from managed applications, PIN for access and block backing up organization data to iTunes/iCloud.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="closing-notes">Closing notes:</h2>
+
+<p>Now that we have set up all of these policies, there is a secure user flow. For example, a user will try to access outlook on their iPhone. Upon login, there will be a prompt to enroll their device. After, the compliance check will start and if the device is compliant, the user will have access to the managed apps. Within the apps, there will be safeguards to further secure company data.</p>
+
+<p>This was a lot of fun to set up and see it develop real-time. In my study for the SC-300, I wanted to simulate what a real company would do to implement MDM. I hope that anyone reading this was able to learn something new!</p>
+
+<hr />
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/mem/intune/fundamentals/deployment-guide-enrollment-ios-ipados">Microsoft article</a> that goes over iOS enrollment</li>
+</ul>]]></content><author><name>Melvin Karuga</name></author><category term="homelab" /><category term="Azure-homelab" /><summary type="html"><![CDATA[MDM for iOS via Intune - Part 2]]></summary></entry><entry><title type="html">HTB Sherlocks - Litter</title><link href="themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html" rel="alternate" type="text/html" title="HTB Sherlocks - Litter" /><published>2023-11-14T00:00:00+00:00</published><updated>2023-11-14T00:00:00+00:00</updated><id>themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter</id><content type="html" xml:base="themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html"><![CDATA[<h2 id="introduction">Introduction</h2>
+<p>This is a write-up of a very fun HackTheBox Sherlock room. If you haven’t heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred.</p>
+
+<h2 id="background">Background</h2>
+<p>Khalid has just logged onto a host that he and his team use as a testing host for many different purposes, it’s off their corporate network but has access to lots of resources in network. The host is used as a dumping ground for a lot of people at the company but it’s very useful, so no one has raised any issues. Little does Khalid know; the machine has been compromised and company information that should not have been on there has now been stolen – it’s up to you to figure out what has happened and what data has been taken.</p>
+
+<h2 id="given">Given</h2>
+<ul>
+  <li>A .pcap file</li>
+</ul>
+
+<h2 id="iocs">IoCs</h2>
+<ul>
+  <li>Signs point to a DNS attack.</li>
+  <li>Attacker IP is sitting at 192.168.157.145 already inside the network, and has communicated with 192.168.157.144 several times.</li>
+  <li>Attacker ip 192.168.157.145 has set itself up as the DNS for our host. Now the requests going from 192.168.157.144 is being intercepted by 192.168.157.145.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231120114353.png" alt="Alt text" /></p>
+<ul>
+  <li>After further analysis, it seems that the strings in front of the URL’s are Hex encoded:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/hex-encoded-urls.png" alt="Alt text" /></p>
+<ul>
+  <li>The first packet sent is decoded to: <strong>!command (DESKTOP-UMNCBE7)</strong> which signifies that a remote machine is controlling the host to execute commands (this desktop is likely our host that has been compromised).</li>
+  <li>After following the UDP stream of the first request, and running the contents through Cyberchef decoding the Hex code, we can see the following output:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119203138.png" alt="Alt text" /></p>
+
+<ul>
+  <li>With some cleanup of the text, we have:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!command (DESKTOP-UMNCBE7) 
+
+C:\Users\test\Downloads&gt; dir 
+Volume in drive C has no label. 
+Volume Serial Number is 503A-D127
+
+Directory of C:\Users\test\Downloads
+
+30/04/2023 11:28 &lt;DIR&gt; . 
+30/04/2023 11:28 &lt;DIR&gt;  ..
+06/05/2021 14:16 1,447,178 7z1900-x64 (1).exe 
+01/03/2021 17:29 1,447,178 7z1900-x64.exe 
+06/04/2021 12:38 479,396,152 Anaconda3-2020.11-Windows-x86_64.exe 
+06/05/2021 14:13 4,763 b574b0333d81b25bdaf0b8bf147d3c607044beb1 (1).zip 
+06/05/2021 14:07 4,763 b574b0333d81b25bdaf0b8bf147d3c607044beb1.zip 
+06/05/2021 13:32 6,643 be3c0ced06b383dc321e49d1122cf0e53f8cf5db.zip 
+04/06/2021 09:26 18,038,784 DB.Browser.for.SQLite-3.12.2-win64.msi 
+28/05/2016 21:38 142,336 dnscat2-v0.07-client-win32.exe 
+02/03/2021 11:12 3,613,174 ExplorerSuite.exe 
+...more files
+
+23 File(s) 794,320,161 bytes 
+2 Dir(s) 24,566,407,168 bytes free
+
+C:\Users\test\Downloads&gt; whoami 
+desktop-umncbe7\test
+</code></pre></div></div>
+
+<ul>
+  <li>There are several more UDP streams to follow, so we will uncover those soon but at least now we can see some of the attacker’s malicious activity. They have launched a remote shell into our host and are now conducting reconnaissance.</li>
+</ul>
+
+<h3 id="found-answers-thus-far">Found answers thus far</h3>
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119210053.png" alt="Alt text" /></p>
+
+<ul>
+  <li>At this point, we have uncovered what kind of attack, what attacker IP, and the first command that was executed.</li>
+</ul>
+
+<h3 id="task-4">Task 4</h3>
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119210640.png" alt="Alt text" /></p>
+
+<ul>
+  <li>The next question asks us what DNS tunneling tool the attacker is using. Let’s go through the next UDP stream to uncover this. After scrolling through the attacker’s cmd activity, we stumble across this:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119205637.png" alt="Alt text" /></p>
+
+<ul>
+  <li>And there it is. The version is listed as <strong>0.07</strong>. Onto the next question.</li>
+</ul>
+
+<h3 id="task-5">Task 5<img src="/assets/images/HTB-litter/Pasted image 20231119210727.png" alt="Alt text" /></h3>
+
+<ul>
+  <li>To find this, let’s filter the traffic to the cmd command that renames file, “ren”:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119210544.png" alt="Alt text" /></p>
+
+<ul>
+  <li>The attacker wanted to rename the file to ‘win_install.exe’ but failed to do so. Let’s search for “dnscat” to see other cmd activity regarding this file.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119212042.png" alt="Alt text" /></p>
+
+<ul>
+  <li>From here it look like the attacker chose to name the file ‘win_installer.exe’ instead.</li>
+</ul>
+
+<h3 id="task-6">Task 6</h3>
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119210903.png" alt="Alt text" /></p>
+
+<ul>
+  <li>For this task, let’s think about what kind of cloud storage can be found on a windows machine. The first that comes to mind is OneDrive. After searching for this, we see the following:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119211006.png" alt="Alt text" /></p>
+
+<ul>
+  <li>There are 0 files found in this directory.</li>
+</ul>
+
+<h3 id="task-7">Task 7</h3>
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119212126.png" alt="Alt text" /></p>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119212231.png" alt="Alt text" /></p>
+
+<ul>
+  <li>Knowing it was on the C: drive, I filtered by this and found the following file. This is our answer.</li>
+</ul>
+
+<h3 id="task-8">Task 8</h3>
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119212325.png" alt="Alt text" /></p>
+
+<ul>
+  <li>There is a massive amount of data, exactly  239,714 bytes, so going through every single line in “user_details.csv” would be inefficient. Let’s look at the output of the .csv to see if we can dig anything up.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119232033.png" alt="Alt text" /></p>
+
+<ul>
+  <li>Here we see that the attacker used the type command to list out all the data found within the file.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted image 20231119232225.png" alt="Alt text" /></p>
+
+<ul>
+  <li>The output from the above command shows the columns that information follows. Knowing that the job is the first column, let’s see if the number is displayed just before.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/PII_Data.png" alt="Alt text" /></p>
+<ul>
+  <li>As we can see, there is a number displayed right before each entry. At the end of the file, the last number we see is 721, which is our answer! This room has been completed!</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>This was a great room. I learned a new technique used by threat actors and was able to see it executed on the other side. Wireshark is such a great tool and provides so much visibility, you just have to know what you’re looking for.</p>
+
+<p>The Sherlocks rooms are a great way to get some fun experience with responding to alerts and attacker activity!</p>]]></content><author><name>Melvin Karuga</name></author><category term="homelab" /><category term="HTB-Sherlocks" /><summary type="html"><![CDATA[Introduction This is a write-up of a very fun HackTheBox Sherlock room. If you haven’t heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred.]]></summary></entry><entry><title type="html">Building an Azure homelab</title><link href="themelvink.com/jekyll-theme-yat/homelab/2023/10/22/Azure-Homelab-1.html" rel="alternate" type="text/html" title="Building an Azure homelab" /><published>2023-10-22T00:00:00+00:00</published><updated>2023-10-22T00:00:00+00:00</updated><id>themelvink.com/jekyll-theme-yat/homelab/2023/10/22/Azure-Homelab-#1</id><content type="html" xml:base="themelvink.com/jekyll-theme-yat/homelab/2023/10/22/Azure-Homelab-1.html"><![CDATA[<h2 id="background">Background</h2>
+<p>It’s hard to believe how much time has flown since my last homelab update. Stepping into my role as a cybersecurity engineer after graduating nearly a year ago has profoundly expanded my horizons in the tech sphere. With hands-on experience now supplementing my previous knowledge, I’m eager to delve into the recent enhancements I’ve made to my homelab setup.</p>
+
+<p>My initial homelab setup was straightforward, primarily focusing on creating a vulnerable virtual Active Directory (AD) environment to simulate attacks and monitor their intricacies in real-time. However, my exposure to AD, Azure, and the comprehensive Microsoft Defender Suite piqued my interest in scaling my homelab further. The expanded version now integrates tools like Splunk, SecurityOnion, a pfSense firewall, and an array of cloud resources. This setup emphasizes a defense-first approach, highlighting critical aspects like incident response and threat hunting.</p>
+
+<h2 id="what-has-changed">What has changed?</h2>
+<p>As mentioned above, I’ve significantly reconfigured my homelab. First, I logically separated the virtual network using a pfSense firewall. I created 5 VMnets:</p>
+
+<p>em0 - Internet access</p>
+
+<p>em1 - Kali attack machine</p>
+
+<p>em2 - AD domain (DC, user machines)</p>
+
+<p>em3 - SecurityOnion and management</p>
+
+<p>em4 - Network tap for IDS</p>
+
+<p>em5 - Splunk server</p>
+
+<p>Big thanks to Cyberwoxacademy for the homelab design - it provided a great foundation to then build out the cloud integration myself.</p>
+
+<p><img src="/assets/images/image-1.png" alt="Alt text" /></p>
+
+<h2 id="the-cloud">The cloud?</h2>
+<p>Now, with all of the system set up out of the way, I can start explaining how I plan on moving all of this stuff to azure. Microsoft has a great program called the Microsoft 365 Developer Program. This enables users to get access to 25 E5 licenses, which include Office 365, Defender for Identity/Endpoint, Azure Active Directory, and Intune to name a few.</p>
+
+<p><img src="/assets/images/image-3.png" alt="Alt text" /></p>
+
+<p>Utilizing these resources, I created a global admin account allowing for the management of user privileges and services. Additionally, I integrated a public domain, ensuring users aren’t confined to connecting via a local domain (this will lead to VPN setup down the road and MFA to enable remote working capabilities). This setup primes the environment for an Azure integration, allowing for seamless authentication using Microsoft accounts, binding individual user identities with their respective devices for a streamlined experience.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>With this, we will start the journey of simulating a real corporate environment with capabiltiies that security teams use to defend against threats and attacks. This will be an invaluable resource to gain insight on how these services are set up and leveraged. Next post will go more in-depth on how I was able to link my “on-prem” infrastructure to the cloud and prep it for MS defender integration.</p>]]></content><author><name>Melvin Karuga</name></author><category term="homelab" /><category term="Azure-homelab" /><summary type="html"><![CDATA[Background It’s hard to believe how much time has flown since my last homelab update. Stepping into my role as a cybersecurity engineer after graduating nearly a year ago has profoundly expanded my horizons in the tech sphere. With hands-on experience now supplementing my previous knowledge, I’m eager to delve into the recent enhancements I’ve made to my homelab setup.]]></summary></entry><entry><title type="html">LLMNR / NBT-NS Poisoning</title><link href="themelvink.com/jekyll-theme-yat/homelab/2022/08/01/video-example.html" rel="alternate" type="text/html" title="LLMNR / NBT-NS Poisoning" /><published>2022-08-01T00:00:00+00:00</published><updated>2022-08-01T00:00:00+00:00</updated><id>themelvink.com/jekyll-theme-yat/homelab/2022/08/01/video-example</id><content type="html" xml:base="themelvink.com/jekyll-theme-yat/homelab/2022/08/01/video-example.html"><![CDATA[<h2 id="llmnrnbt-ns-poisoning">LLMNR/NBT-NS Poisoning</h2>
+<p>What is LLMNR? LLMNR stands for <em>link-local multicast name resolution</em>.  It is used to resolve host names on local networks.
+  The main fuction is to allow communication between hosts. LLMNR’s predecessor, NetBIOS or NBT-NS, is now outdated.</p>
+
+<p>This attack takes advantage of this protocol.  When a user enters the name of a request, DNS resolves it.  However, if DNS cannot find the request or if the request is spelt wrong for example, the host sends out a broadcast to the network asking for someone to retrieve their request.<br />
+	If an attacker is sitting on the network and receives this request, they can respond and ask the host to send it’s authentification hash over, providing full user access for the attacker once the hash is cracked.</p>
+
+<h2 id="the-attack">The Attack:</h2>
+<p>On our Kali Linux attacking machine, we will be running Responder, a tool that allows us to execute this attack.  We will use the following command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>python Repsonder.py <span class="nt">-I</span> eth0 - rdwv
+</code></pre></div></div>
+<p>Once this is ran, Responder begins listening for events.  In a real world scenario, an attacker would set this up in the morning, before everyone logs on to their environments so that the attacker can receive the most traffic.</p>
+
+<p><a href="https://postimg.cc/McSfNgf8"><img src="https://i.postimg.cc/R0316BMq/respondinglistening.png" alt="respondinglistening.png" /></a></p>
+
+<p>Now we can see that Responder is successfully listening for events.  At this point, we are setup to begin receiving broadcast messages.  After sending a request that does not exist on the user “fcastle”, our attacking machine has received a connection:</p>
+
+<p><a href="https://postimg.cc/MnCZFB4M"><img src="https://i.postimg.cc/TPwyhqJ9/Auto-Hotkey-x-Mq-U1-K6-Iw-I.png" alt="Auto-Hotkey-x-Mq-U1-K6-Iw-I.png" /></a></p>
+<h2 id="hash-cracking">Hash Cracking:</h2>
+<p>After receving the hash, we will crack it using hashcat on our attacking machine. We will use the rockyou.txt.gz wordlist to run against the NetNTLMv2 hash.  After running haschat, the results are:</p>
+
+<p><a href="https://postimg.cc/64nNkbGD"><img src="https://i.postimg.cc/WzfbJQpb/Capture.png" alt="Capture.png" /></a></p>
+
+<p>And just like that, the password has been cracked. At the end of the hash, the password is displayed.  For purposes of this lab, the password was simple and easy to crack. However, after receiving a hash, an attacker will be patient and work on cracking the hash, no matter how diffucult. The usage of weak passwords is surprisingly common within networks that do not have proper security measures set in place. After cracking a hash, an attacker now has access and it is just a matter of enumerating and moving around the network.  Password reuse can also be an issue for networks, so an attacker’s next steps would be to spray this password around and see what they can expose.</p>
+
+<h2 id="defense">Defense:</h2>
+<p>So, what can be done to mitigate this issue?
+	 The best defense is to disable LLMNR and NBT-NS to completely eradicate the possibility of this event occuring. Another step is to require much stronger passwords.  14+ character passwords are very difficult to crack and would pose a great challenge for any attacker.  However, if an attacker is persistent, the hashes can still be cracked no matter the difficulty.</p>]]></content><author><name>Melvin Karuga</name></author><category term="homelab" /><category term="homelab" /><summary type="html"><![CDATA[LLMNR/NBT-NS Poisoning What is LLMNR? LLMNR stands for link-local multicast name resolution. It is used to resolve host names on local networks. The main fuction is to allow communication between hosts. LLMNR’s predecessor, NetBIOS or NBT-NS, is now outdated.]]></summary></entry><entry><title type="html">Building a virtual homelab</title><link href="themelvink.com/jekyll-theme-yat/homelab/2022/04/26/Building-a-britual-homelab.html" rel="alternate" type="text/html" title="Building a virtual homelab" /><published>2022-04-26T00:00:00+00:00</published><updated>2022-04-26T00:00:00+00:00</updated><id>themelvink.com/jekyll-theme-yat/homelab/2022/04/26/Building-a-britual-homelab</id><content type="html" xml:base="themelvink.com/jekyll-theme-yat/homelab/2022/04/26/Building-a-britual-homelab.html"><![CDATA[<h2 id="why">Why?</h2>
+<p>Reading up on material and theory can be helpful, but there was only so much I was able to learn by studying network fundamentals and how vulerabilities are exploited.  I needed to actually go out and experiment with these concepts.  There are alternatives, such as tryhackme and hackthebox, but I wanted to also dig deeper; I wanted to create the simulation myself with an active directory, a domain controller, and an up and running server with users and administrators.  The aim was to simulate a real working environment, all with the help of VMware.</p>
+
+<h2 id="what-is-a-homelab">What is a homelab?</h2>
+<p>A homelab is an environment that you can create yourelf to practice skills and theories that you run across.  Want to experiment with LLMNR and NBT-NS poisoning? Want to attempt using kerberoasting? Do you simply want to get an idea of what an active directory domain looks like and how it’s built? A homelab is a great way of getting this crucial hands-on experience.</p>
+
+<h2 id="the-setup">The Setup</h2>
+<p>With this homelab, I will be utilizing active directory on a Windows 2019 Enterprise server; this will also act as my domain controller.  I will be also using two Windows 10 virtual machines to act as users in this environment.  As for the attacking machine, I will be deploying a Kali Linux VM.  In the future as I dig deeper, I will be expanding this homelab and adding more machines, more users/admins, and deploying a pfSense firewall as my attacks get more advanced overtime.</p>
+
+<h2 id="hardware">Hardware</h2>
+<p>As with a virtual lab, I need a decent physical machine to be able to run all of these virtual machines.  My hardware is listed below:</p>
+<ul>
+  <li>CPU: AMD Ryzen 5 3600 6-Core Processor</li>
+  <li>RAM: Corsair Vengeance 32GB 3600MHz DDR4</li>
+  <li>GPU: NVIDIA RTX 2070</li>
+  <li>MOTHERBOARD: B450 Pro4</li>
+</ul>
+
+<h2 id="installing-and-configuring">Installing and Configuring:</h2>
+<p>After I installed all of the machines, I began working on the Windows Server and configuring it.  Firstly, we will need two certificates.  We will need both the “Active Directory Certicate Services” or AD CS and “Active Directorty Domain Services” or AD DS.</p>
+
+<p><strong>What is AD CS?</strong> 
+The importance of AD CS is the usage of PKI, which is the software and tech that allows you to secure your data.  PKI uses digital certificates to authenticate its services. AD CS provides the PKI components and lets it run on your domain.</p>
+
+<p><strong>What is AD DS?</strong> 
+This is the service that is used to set the server as the domain controller. This allows us to store information consisting of users, networks and its applications.</p>
+
+<p>After I have configured the domain controller, I will connect both of the user accounts to the domain.  I’ll be doing this by simply joining each device to the local Active Directory domain. Before this, I will need to grap the IP address of the domain controller and input it to both the machine’s preferred DNS server. Once this is done, there is now a connection between the users and the server.  Now, we can join the users to the domain.</p>
+
+<p>To take this a bit further, I am going to make both of the users a local adminsitrator on their respective machines.  This will allow me to have access to several common attacks and be able to execute them.  Attacks such as SMB relay attacks and LLMNR poisoning are now avalaible to me and I will be able to view these attacks in a real environment.  SMB being enabled in the environment also means that I can utilize attacks such as pass-the-password and pass-the-hash.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>As it can be seen, this active directory environment is purposefully set in a vulnerable state in order to execute attacks.  I will be recording my progress with these several vulnerabilities in more depth in future posts; this post was meant for introducing the lab and what it’s intended for in the future.  As my knowledge grows, I’ll expand this environment to allow for more advanced and sophisticated attacks. Thank you for reading!</p>]]></content><author><name>Melvin Karuga</name></author><category term="homelab" /><category term="homelab" /><summary type="html"><![CDATA[Why? Reading up on material and theory can be helpful, but there was only so much I was able to learn by studying network fundamentals and how vulerabilities are exploited. I needed to actually go out and experiment with these concepts. There are alternatives, such as tryhackme and hackthebox, but I wanted to also dig deeper; I wanted to create the simulation myself with an active directory, a domain controller, and an up and running server with users and administrators. The aim was to simulate a real working environment, all with the help of VMware.]]></summary></entry></feed>

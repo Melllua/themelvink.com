@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>HTB Sherlocks - Litter | theMelvinK</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="HTB Sherlocks - Litter">
+<meta name="author" content="Melvin Karuga">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Introduction This is a write-up of a very fun HackTheBox Sherlock room. If you haven’t heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred.">
+<meta property="og:description" content="Introduction This is a write-up of a very fun HackTheBox Sherlock room. If you haven’t heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred.">
+<link rel="canonical" href="themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html">
+<meta property="og:url" content="themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html">
+<meta property="og:site_name" content="theMelvinK">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-11-14T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="HTB Sherlocks - Litter">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Melvin Karuga"},"dateModified":"2023-11-14T00:00:00+00:00","datePublished":"2023-11-14T00:00:00+00:00","description":"Introduction This is a write-up of a very fun HackTheBox Sherlock room. If you haven’t heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred.","headline":"HTB Sherlocks - Litter","mainEntityOfPage":{"@type":"WebPage","@id":"themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html"},"url":"themelvink.com/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="themelvink.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="themelvink.com/jekyll-theme-yat/feed.xml" title="theMelvinK">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="theMelvinK" src="" onerror="this.style.display='none'">
+  theMelvinK
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 4.25em; font-weight: bold; text-decoration: underline
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/jekyll-theme-yat/assets/images/banners/wireshark-1.png)"></div>
+        <img class="img-placeholder" src="/jekyll-theme-yat/assets/images/banners/wireshark-1.png">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">HTB Sherlocks - Litter</h1>
+  <h2 class="post-subtitle">Investigation against DNS tunneling w/ Wireshark.</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-11-14T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 14, 2023
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Melvin Karuga</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#HTB-Sherlocks">#HTB-Sherlocks</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="introduction">Introduction</h2>
+<p>This is a write-up of a very fun HackTheBox Sherlock room. If you haven’t heard of HTB Sherlock rooms, they are meant to be on the defensive side of security. So instead of hacking, we are going to be analyzing attacks after an incident has occurred.</p>
+
+<h2 id="background">Background</h2>
+<p>Khalid has just logged onto a host that he and his team use as a testing host for many different purposes, it’s off their corporate network but has access to lots of resources in network. The host is used as a dumping ground for a lot of people at the company but it’s very useful, so no one has raised any issues. Little does Khalid know; the machine has been compromised and company information that should not have been on there has now been stolen – it’s up to you to figure out what has happened and what data has been taken.</p>
+
+<h2 id="given">Given</h2>
+<ul>
+  <li>A .pcap file</li>
+</ul>
+
+<h2 id="iocs">IoCs</h2>
+<ul>
+  <li>Signs point to a DNS attack.</li>
+  <li>Attacker IP is sitting at 192.168.157.145 already inside the network, and has communicated with 192.168.157.144 several times.</li>
+  <li>Attacker ip 192.168.157.145 has set itself up as the DNS for our host. Now the requests going from 192.168.157.144 is being intercepted by 192.168.157.145.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231120114353.png" alt="Alt text"></p>
+<ul>
+  <li>After further analysis, it seems that the strings in front of the URL’s are Hex encoded:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/hex-encoded-urls.png" alt="Alt text"></p>
+<ul>
+  <li>The first packet sent is decoded to: <strong>!command (DESKTOP-UMNCBE7)</strong> which signifies that a remote machine is controlling the host to execute commands (this desktop is likely our host that has been compromised).</li>
+  <li>After following the UDP stream of the first request, and running the contents through Cyberchef decoding the Hex code, we can see the following output:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119203138.png" alt="Alt text"></p>
+
+<ul>
+  <li>With some cleanup of the text, we have:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!command (DESKTOP-UMNCBE7) 
+
+C:\Users\test\Downloads&gt; dir 
+Volume in drive C has no label. 
+Volume Serial Number is 503A-D127
+
+Directory of C:\Users\test\Downloads
+
+30/04/2023 11:28 &lt;DIR&gt; . 
+30/04/2023 11:28 &lt;DIR&gt;  ..
+06/05/2021 14:16 1,447,178 7z1900-x64 (1).exe 
+01/03/2021 17:29 1,447,178 7z1900-x64.exe 
+06/04/2021 12:38 479,396,152 Anaconda3-2020.11-Windows-x86_64.exe 
+06/05/2021 14:13 4,763 b574b0333d81b25bdaf0b8bf147d3c607044beb1 (1).zip 
+06/05/2021 14:07 4,763 b574b0333d81b25bdaf0b8bf147d3c607044beb1.zip 
+06/05/2021 13:32 6,643 be3c0ced06b383dc321e49d1122cf0e53f8cf5db.zip 
+04/06/2021 09:26 18,038,784 DB.Browser.for.SQLite-3.12.2-win64.msi 
+28/05/2016 21:38 142,336 dnscat2-v0.07-client-win32.exe 
+02/03/2021 11:12 3,613,174 ExplorerSuite.exe 
+...more files
+
+23 File(s) 794,320,161 bytes 
+2 Dir(s) 24,566,407,168 bytes free
+
+C:\Users\test\Downloads&gt; whoami 
+desktop-umncbe7\test
+</code></pre></div></div>
+
+<ul>
+  <li>There are several more UDP streams to follow, so we will uncover those soon but at least now we can see some of the attacker’s malicious activity. They have launched a remote shell into our host and are now conducting reconnaissance.</li>
+</ul>
+
+<h3 id="found-answers-thus-far">Found answers thus far</h3>
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119210053.png" alt="Alt text"></p>
+
+<ul>
+  <li>At this point, we have uncovered what kind of attack, what attacker IP, and the first command that was executed.</li>
+</ul>
+
+<h3 id="task-4">Task 4</h3>
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119210640.png" alt="Alt text"></p>
+
+<ul>
+  <li>The next question asks us what DNS tunneling tool the attacker is using. Let’s go through the next UDP stream to uncover this. After scrolling through the attacker’s cmd activity, we stumble across this:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119205637.png" alt="Alt text"></p>
+
+<ul>
+  <li>And there it is. The version is listed as <strong>0.07</strong>. Onto the next question.</li>
+</ul>
+
+<h3 id="task-5">Task 5<img src="/assets/images/HTB-litter/Pasted%20image%2020231119210727.png" alt="Alt text">
+</h3>
+
+<ul>
+  <li>To find this, let’s filter the traffic to the cmd command that renames file, “ren”:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119210544.png" alt="Alt text"></p>
+
+<ul>
+  <li>The attacker wanted to rename the file to ‘win_install.exe’ but failed to do so. Let’s search for “dnscat” to see other cmd activity regarding this file.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119212042.png" alt="Alt text"></p>
+
+<ul>
+  <li>From here it look like the attacker chose to name the file ‘win_installer.exe’ instead.</li>
+</ul>
+
+<h3 id="task-6">Task 6</h3>
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119210903.png" alt="Alt text"></p>
+
+<ul>
+  <li>For this task, let’s think about what kind of cloud storage can be found on a windows machine. The first that comes to mind is OneDrive. After searching for this, we see the following:</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119211006.png" alt="Alt text"></p>
+
+<ul>
+  <li>There are 0 files found in this directory.</li>
+</ul>
+
+<h3 id="task-7">Task 7</h3>
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119212126.png" alt="Alt text"></p>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119212231.png" alt="Alt text"></p>
+
+<ul>
+  <li>Knowing it was on the C: drive, I filtered by this and found the following file. This is our answer.</li>
+</ul>
+
+<h3 id="task-8">Task 8</h3>
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119212325.png" alt="Alt text"></p>
+
+<ul>
+  <li>There is a massive amount of data, exactly  239,714 bytes, so going through every single line in “user_details.csv” would be inefficient. Let’s look at the output of the .csv to see if we can dig anything up.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119232033.png" alt="Alt text"></p>
+
+<ul>
+  <li>Here we see that the attacker used the type command to list out all the data found within the file.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/Pasted%20image%2020231119232225.png" alt="Alt text"></p>
+
+<ul>
+  <li>The output from the above command shows the columns that information follows. Knowing that the job is the first column, let’s see if the number is displayed just before.</li>
+</ul>
+
+<p><img src="/assets/images/HTB-litter/PII_Data.png" alt="Alt text"></p>
+<ul>
+  <li>As we can see, there is a number displayed right before each entry. At the end of the file, the last number we see is 721, which is our answer! This room has been completed!</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>This was a great room. I learned a new technique used by threat actors and was able to see it executed on the other side. Wireshark is such a great tool and provides so much visibility, you just have to know what you’re looking for.</p>
+
+<p>The Sherlocks rooms are a great way to get some fun experience with responding to alerts and attacker activity!</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/homelab/2023/10/22/Azure-Homelab-1.html" title="Building an Azure homelab">Building an Azure homelab</a><a class="next" href="/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-1.html" title="MDM via Azure - Part 1">MDM via Azure - Part 1...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/homelab/2023/10/22/Azure-Homelab-1.html" title="Building an Azure homelab">
+            Building an Azure homelab<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/homelab/2022/04/26/Building-a-britual-homelab.html" title="Building a virtual homelab">
+            Building a virtual homelab<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/homelab/2024/09/28/MDM-for-iOS-via-Intune-Part-2.html" title="MDM via Azure - Part 2">
+            MDM via Azure - Part 2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/homelab/2023/11/14/HTB-Sherlocks-Litter.html" title="HTB Sherlocks - Litter">
+            HTB Sherlocks - Litter<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 Melvin Karuga</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

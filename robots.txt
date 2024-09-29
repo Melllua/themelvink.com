@@ -1,0 +1,1 @@
+Sitemap: themelvink.com/jekyll-theme-yat/sitemap.xml
